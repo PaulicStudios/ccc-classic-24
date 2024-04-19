@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -95,30 +94,33 @@ func ExecFile(fileName string) {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		w, a, s, d := 0, 0, 0, 0
+		h, maxH, w, maxW := 0, 0, 0, 0
+		// w, a, s, d := 0, 0, 0, 0
 		for _, c := range line {
 			switch c {
 			case 'W':
 				w++
+				if h < maxH {
+					h++
+				} else {
+					h++
+					maxH++
+				}
 			case 'A':
-				a++
+				if w < maxW {
+					w++
+				} else {
+					w++
+					maxW++
+				}
 			case 'S':
-				s++
+				w--
 			case 'D':
-				d++
+				h--
 			}
 		}
 
-		h, w := 0, 0
-		h += w
-		h -= s
-		w += a
-		w -= d
-
-		h = int(math.Abs(float64(h)))
-		w = int(math.Abs(float64(w)))
-
-		_, err := fmt.Fprintln(outFile, h, w)
+		_, err := fmt.Fprintln(outFile, maxH, maxW)
 		if err != nil {
 			fmt.Println("Error writing to output file:", err)
 			break
