@@ -1,0 +1,26 @@
+{
+    "dockerFile": "Dockerfile",
+    "customizations": {
+        "extensions": [
+            "ms-vscode.cpptools"
+        ],
+        "vscode": {
+			"settings": {
+				"terminal.integrated.shell.linux": "/bin/bash",
+				"editor.formatOnPaste": true,
+				"editor.formatOnSave": true,
+				"[rust]": {
+					"editor.defaultFormatter": "rust-lang.rust-analyzer"
+				}
+            },
+            "extensions": [
+                "rust-lang.rust-analyzer"
+            ]
+        }
+    },
+    "mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+	],
+	"workspaceFolder": "/workspaces/coding_contest"
+}
