@@ -9,6 +9,51 @@ import (
 )
 
 func main() {
+	exampleFileName, err := filepath.Glob("./in/level*_example.in")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	inputFile := exampleFileName[0]
+	ExecFile(inputFile)
+	exampleOut, err := filepath.Glob("./in/level*_example.out")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	ownExampleOut, err := filepath.Glob("./out/level*_example.out")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	exampleFile, err := os.Open(exampleOut[0])
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	scanner := bufio.NewScanner(exampleFile)
+	ownExampleFile, err := os.Open(ownExampleOut[0])
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	scannerOwn := bufio.NewScanner(ownExampleFile)
+
+	count := 1
+	for scanner.Scan() {
+		line := scanner.Text()
+		scannerOwn.Scan()
+		lineOwn := scannerOwn.Text()
+		if len(line) != len(lineOwn) {
+			fmt.Println("Error: example output files do not match in line: ", count)
+			fmt.Println("Expected:", line)
+			fmt.Println("Got:", lineOwn)
+		}
+		count++
+	}
+
 	inputFiles, err := filepath.Glob("./in/level*_*.in")
 	if err != nil {
 		fmt.Println("Error:", err)
