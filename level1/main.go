@@ -90,10 +90,24 @@ func ExecFile(fileName string) {
 	outFile := OutFile(fileName)
 
 	scanner := bufio.NewScanner(file)
+	scanner.Scan()
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		_, err := fmt.Fprintln(outFile, line+"test")
+		w, a, s, d := 0, 0, 0, 0
+		for _, c := range line {
+			switch c {
+			case 'W':
+				w++
+			case 'A':
+				a++
+			case 'S':
+				s++
+			case 'D':
+				d++
+			}
+		}
+		_, err := fmt.Fprintln(outFile, w, a, s, d)
 		if err != nil {
 			fmt.Println("Error writing to output file:", err)
 			break
